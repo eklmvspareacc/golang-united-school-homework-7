@@ -272,3 +272,67 @@ func Test_Matrix_Cols(t *testing.T) {
 		})
 	}
 }
+
+func Test_Matrix_Set(t *testing.T){
+	tData := map[string]struct {
+		m *Matrix
+		row, col, value int
+		expected bool
+		expectedMatrix *Matrix	
+	}{
+		"empty":
+			{
+				&Matrix{0, 0, []int{}},
+				0, 0, 0,
+				false,
+				&Matrix{},
+			},
+		"negative row":
+			{
+				&Matrix{0, 0, []int{}},
+				-1, 0, 0,
+				false,
+				&Matrix{},
+			},
+		"negative col":
+			{
+				&Matrix{0, 0, []int{}},
+				0, -1, 0,
+				false,
+				&Matrix{},
+			},
+		"row too big":
+			{
+				&Matrix{0, 0, []int{}},
+				3, 0, 0,
+				false,
+				&Matrix{},
+			},
+		"column too big":
+			{
+				&Matrix{0, 0, []int{}},
+				0, 3, 0,
+				false,
+				&Matrix{},
+			},
+		"correct":
+			{
+				&Matrix{3, 3, []int{1, 2, 3, 4, 5, 6, 7, 8, 9}},
+				1, 2, 10,
+				true,
+				&Matrix{3, 3, []int{1, 2, 3, 4, 5, 10, 7, 8, 9}},
+			},
+	}
+	for name, tcase := range tData {
+		t.Run(name, func(t *testing.T) {
+			got := tcase.m.Set(tcase.row, tcase.col, tcase.value)
+			if got != tcase.expected {
+				t.Errorf("[%s] expected: %t, got: %t", name, tcase.expected, got)
+				return
+			}
+			if tcase.expected && !reflect.DeepEqual(tcase.m, tcase.expectedMatrix) {
+				t.Errorf("[%s] expected matrix: %v, got: %v", name, tcase.expectedMatrix, tcase.m)
+			}
+		})
+	}
+}
