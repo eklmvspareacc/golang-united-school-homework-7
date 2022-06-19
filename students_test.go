@@ -2,6 +2,7 @@ package coverage
 
 import (
 	"os"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -139,6 +140,52 @@ func Test_People_Swap(t *testing.T) {
 				if v != tcase.expected[i] {
 					t.Errorf("[%s] expected: %+v, got: %+v", name, tcase.expected, tcase.p)
 				} 
+			}
+		})
+	}
+}
+
+func Test_Matrix_New(t *testing.T) {
+	tData := map[string]struct {
+		str string
+		expected *Matrix
+		expectErr bool
+	}{
+		"correct":
+			{
+				"1 2 3\n4 5 6\n7 8 9",
+				&Matrix{3, 3, []int{1,2,3,4,5,6,7,8,9}},
+				false,
+			},
+		"different row lenght":
+			{
+				"1 2 3\n4 5 6 7\n7 8 9 10 11",
+				&Matrix{},
+				true,
+			},
+		"invalid characters":
+			{
+				"1 2 3:\n4a 5 6\n7 8sd 9",
+				&Matrix{},
+				true,
+			},
+	}
+	for name, tcase := range tData {
+		t.Run(name, func(t *testing.T) {
+			got, err := New(tcase.str) 
+			if tcase.expectErr && err == nil {
+				t.Errorf("[%s] no expected error", name)
+				return
+			}
+			if !tcase.expectErr && err != nil {
+				t.Errorf("[%s] unexpected error: %v", name, err)
+				return
+			}
+			if tcase.expectErr && err != nil {
+				return
+			}
+			if !reflect.DeepEqual(got, tcase.expected) {
+				t.Errorf("[%s] expected: %+v, got: %+v", name, tcase.expected, got)
 			}
 		})
 	}
