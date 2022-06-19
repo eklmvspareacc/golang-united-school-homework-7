@@ -109,3 +109,37 @@ func Test_Less(t *testing.T) {
 		})
 	}
 }
+
+func Test_Swap(t *testing.T) {
+	tData := map[string]struct {
+		p People
+		i, j int
+		expected People
+	}{
+		"swap two indexes":
+			{
+				People{
+					{firstName: "Aaron"},
+					{firstName: "Baron"},
+				},
+				0, 1,
+				People{
+					{firstName: "Baron"},
+					{firstName: "Aaron"},
+				},
+			},
+	}
+	for name, tcase := range tData {
+		t.Run(name, func(t *testing.T) {
+			tcase.p.Swap(tcase.i, tcase.j)
+			if len(tcase.p) != len(tcase.expected) {
+				t.Errorf("[%s] expected slice len: %d, got: %d", name, len(tcase.expected), len(tcase.p))
+			}
+			for i, v := range tcase.p {
+				if v != tcase.expected[i] {
+					t.Errorf("[%s] expected: %+v, got: %+v", name, tcase.expected, tcase.p)
+				} 
+			}
+		})
+	}
+}
