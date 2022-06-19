@@ -231,3 +231,44 @@ func Test_Matrix_Row(t *testing.T) {
 		})
 	}
 }
+
+func Test_Matrix_Cols(t *testing.T) {
+	tData := map[string]struct {
+		m Matrix
+		expected [][]int
+	}{
+		"empty": 
+			{
+				Matrix {0, 0, []int{}},
+				[][]int{},
+			},
+		"one row, one column":
+			{
+				Matrix {1, 1, []int{1}},
+				[][]int{{1}},
+			},
+		"one row, many columns":
+			{
+				Matrix {1, 3, []int{1, 2, 3}},
+				[][]int{{1}, {2}, {3}},
+			},
+		"many rows, one column":
+			{
+				Matrix {3, 1, []int{1, 2, 3}},
+				[][]int{{1, 2, 3}},
+			},
+		"many rows, many columns":
+			{	
+				Matrix {3, 3, []int{1, 2, 3, 4, 5, 6, 7, 8, 9}},
+				[][]int{{1, 4, 7}, {2, 5, 8}, {3, 6, 9}},
+			},
+	}
+	for name, tcase := range tData {
+		t.Run(name, func(t *testing.T) {
+			got := tcase.m.Cols()
+			if !reflect.DeepEqual(got, tcase.expected) {
+				t.Errorf("[%s] expected: %v, got: %v", name, tcase.expected, got)
+			}
+		})
+	}
+}
