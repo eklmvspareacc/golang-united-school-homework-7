@@ -20,7 +20,7 @@ func init() {
 
 // WRITE YOUR CODE BELOW
 
-func Test_Len(t *testing.T) {
+func Test_People_Len(t *testing.T) {
 	tData := map[string]struct {
 		p People
 		expected int
@@ -38,7 +38,7 @@ func Test_Len(t *testing.T) {
 	}
 }
 
-func Test_Less(t *testing.T) {
+func Test_People_Less(t *testing.T) {
 	tData := map[string]struct {
 		p People
 		expected bool
@@ -110,7 +110,7 @@ func Test_Less(t *testing.T) {
 	}
 }
 
-func Test_Swap(t *testing.T) {
+func Test_People_Swap(t *testing.T) {
 	tData := map[string]struct {
 		p People
 		i, j int
